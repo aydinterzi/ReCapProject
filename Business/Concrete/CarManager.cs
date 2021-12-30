@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Core.Constants;
+using Core.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
@@ -18,48 +20,50 @@ namespace Business.Concrete
             _iCarDal = iCarDal;
         }
 
-        public void Add(Car car)
+        public IResult Add(Car car)
         {
             if(car.Description.Length>2 && car.DailyPrice>0)
             {
                 _iCarDal.Add(car);
-                Console.WriteLine("araba eklendi.");
+                return new Result(true,Messages.CarAdded);
             }
             else
             {
-                Console.WriteLine("araba eklenemez");
+                return new Result(false,"Araba eklenemedi");
             }
             
         }
 
-        public void Delete(Car car)
+        public IResult Delete(Car car)
         {
             _iCarDal.Delete(car);
+            return new SuccessResult();
         }
 
-        public List<Car> GetAll()
+        public IDataResult<List<Car>> GetAll()
         {
-            return _iCarDal.GetAll();             
+            return new SuccessDataResult<List<Car>>(_iCarDal.GetAll());             
         }
 
-        public List<CarDetailDto> GetCarDetails()
+        public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
-            return _iCarDal.GetCarDetails();
+            return new SuccessDataResult<List<CarDetailDto>>(_iCarDal.GetCarDetails());
         }
 
-        public List<Car> GetCarsByBrandId(int id)
+        public IDataResult<List<Car>> GetCarsByBrandId(int id)
         {
-            return _iCarDal.GetAll(c => c.BrandId == id);
+            return new SuccessDataResult<List<Car>>(_iCarDal.GetAll(c => c.BrandId == id));
         }
 
-        public List<Car> GetCarsByColorId(int id)
+        public IDataResult<List<Car>> GetCarsByColorId(int id)
         {
-            return _iCarDal.GetAll(c => c.ColorId == id);
+            return new SuccessDataResult<List<Car>>(_iCarDal.GetAll(c => c.ColorId == id));
         }
 
-        public void Update(Car car)
+        public IResult Update(Car car)
         {
             _iCarDal.Update(car);
+            return new SuccessResult();
         }
     }
 }
