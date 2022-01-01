@@ -12,7 +12,7 @@ brandManager.Add(new Brand { Id = 3, Name = "Merco" });
 colorManager.Add(new Color { Id = 1, Name = "Blue" });
 colorManager.Add(new Color { Id = 2, Name = "Red" });
 colorManager.Add(new Color { Id = 3, Name = "Grey" });
-foreach (var item in carManager.GetCarDetails())
+foreach (var item in carManager.GetCarDetails().Data)
 {
     Console.WriteLine(item.CarName+" "+item.ColorName+" "+item.BrandName);
 }
