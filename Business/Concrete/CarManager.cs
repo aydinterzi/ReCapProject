@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Constants;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Results;
@@ -21,10 +22,9 @@ namespace Business.Concrete
         {
             _iCarDal = iCarDal;
         }
-
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
-            ValidationTool.Validate(new CarValidator(), car);
             if(car.Description.Length>2 && car.DailyPrice>0)
             {
                 _iCarDal.Add(car);
