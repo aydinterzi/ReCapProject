@@ -19,6 +19,7 @@ namespace Core.DataAccess.EntityFramework
             {
                 var addedEntity = context.Entry(entity);
                 addedEntity.State = EntityState.Added;
+                // TODO: Araba resmi eklemeye çalışırken hata.
                 context.SaveChanges();
             }
         }

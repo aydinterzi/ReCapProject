@@ -13,8 +13,8 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(builder => builder.RegisterModule(new AutofacBusinessModule()));
 
 // Add services to the container.
-builder.Services.AddSingleton<ICarDal,EfCarDal>();
-builder.Services.AddSingleton<ICarService,CarManager>();
+//builder.Services.AddSingleton<ICarDal,EfCarDal>();
+//builder.Services.AddSingleton<ICarService,CarManager>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -30,6 +30,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 
 app.UseAuthorization();
 
