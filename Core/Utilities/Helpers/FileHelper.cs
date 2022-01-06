@@ -29,5 +29,23 @@ namespace Core.Utilities.Helpers
             }
             
         }
+
+        public static void DeleteImageFromFolder(string filePath)
+        {
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+        }
+
+        public static string Update(IFormFile file, string filePath)
+        {
+
+            if (File.Exists(filePath))// Tekrar if kontrolü ile parametrede gelen adreste öyle bir dosya var mı diye kontrol ediliyor.
+            {
+                File.Delete(filePath);//Eğer dosya var ise dosya bulunduğu yerden siliniyor.
+            }
+            return AddImagetoFolder(file);
+        }
     }
 }

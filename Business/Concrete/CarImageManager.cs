@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Core.Business;
+using Core.Constants;
 using Core.Results;
 using Core.Utilities.Helpers;
 using DataAccess.Abstract;
@@ -23,20 +25,64 @@ namespace Business.Concrete
 
         public IResult Add(IFormFile file,CarImage carImage)
         {
+            IResult result = BusinessRules.Run(CheckIfCarHas5Images(carImage));
+            if (result != null)
+                return result;
             carImage.ImagePath = FileHelper.AddImagetoFolder(file);
             carImage.Date = DateTime.Now;
             _carImageDal.Add(carImage);
             return new SuccessResult();
         }
 
-        public IResult Delete(CarImage carcarImage)
+        public IDataResult<List<CarImage>> GetByCarId(int carId)
         {
-            throw new NotImplementedException();
+            var result = BusinessRules.Run(CheckCarImage(carId));
+            if (result != null)
+            {
+                return new ErrorDataResult<List<CarImage>>(GetDefaultImage(carId).Data);
+            }
+            return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(c => c.CarId == carId));
         }
 
-        public IResult Update(CarImage carImage)
+        private IResult CheckCarImage(int carId)
         {
-            throw new NotImplementedException();
+            var result = _carImageDal.GetAll(c => c.CarId == carId).Count;
+            if (result > 0)
+            {
+                return new SuccessResult();
+            }
+            return new ErrorResult();
+        }
+
+        private IDataResult<List<CarImage>> GetDefaultImage(int carId)
+        {
+
+            List<CarImage> carImage = new List<CarImage>();
+            carImage.Add(new CarImage { CarId = carId, Date = DateTime.Now, ImagePath = "DefaultImage.jpg" });
+            return new SuccessDataResult<List<CarImage>>(carImage);
+        }
+
+        public IResult Delete(CarImage carImage)
+        {
+            FileHelper.DeleteImageFromFolder(WebRootPath.ImagesPath+carImage.ImagePath);
+            _carImageDal.Delete(carImage);
+            return new SuccessResult();
+        }
+
+        public IResult Update(IFormFile file, CarImage carImage)
+        {
+            carImage.ImagePath = FileHelper.Update(file, WebRootPath.ImagesPath + carImage.ImagePath);
+            _carImageDal.Update(carImage);
+            return new SuccessResult();
+        }
+
+
+        private IResult CheckIfCarHas5Images(CarImage carImage)
+        {
+            var result = _carImageDal.GetAll(c => c.CarId == carImage.CarId);
+            if (result.Count > 5)
+                return new ErrorResult();
+            return new SuccessResult();
         }
     }
 }

@@ -23,9 +23,11 @@ namespace DataAccess.Concrete.EntityFramework
                              on c.BrandId equals b.Id
                              join color in context.Colors
                              on c.ColorId equals color.Id
-                             select new CarDetailDto { BrandName = b.Name, CarId = c.Id, CarName = c.Name, ColorName = color.Name, DailyPrice = c.DailyPrice };
+                             select new CarDetailDto { BrandName = b.Name, CarId = c.CarId, CarName = c.Name, ColorName = color.Name, DailyPrice = c.DailyPrice };
                 return result.ToList();
             }
         }
+
+      
     }
 }
