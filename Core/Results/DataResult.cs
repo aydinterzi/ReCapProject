@@ -17,6 +17,7 @@ namespace Core.Results
         {
             Data = data;
         }
+      
         public T Data { get; }
 
     }
