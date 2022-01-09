@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using Business.BusinessAspects.Autofac;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Validation;
 using Core.Constants;
 using Core.CrossCuttingConcerns.Validation;
@@ -46,6 +47,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [CacheAspect]
         public IDataResult<List<Car>> GetAll()
         {
             return new SuccessDataResult<List<Car>>(_iCarDal.GetAll());             
