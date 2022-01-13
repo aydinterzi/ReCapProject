@@ -1,4 +1,4 @@
-### ReCapProject  
+### ReCapProject Backend  
 ## Used Technologies and Patterns  
 Restful API  
 Result Types  
